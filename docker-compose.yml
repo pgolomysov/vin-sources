@@ -7,6 +7,7 @@ services:
             args:
                 WWWGROUP: '${WWWGROUP}'
         image: sail-8.1/app
+        command: php artisan rabbitmq:consume --queue=sources_task
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
@@ -25,3 +26,4 @@ services:
 networks:
     vin:
         driver: bridge
+        external: true
