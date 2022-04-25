@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Services\Sources;
+namespace App\Services\Sources\Factory;
+
+use App\Services\Sources\SourceInterface;
 
 interface SourceFactoryInterface
 {

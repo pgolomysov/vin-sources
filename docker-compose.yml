@@ -21,8 +21,6 @@ services:
             - '.:/var/www/html'
         networks:
             - vin
-        depends_on:
-            - vin-mysql
 networks:
     vin:
         driver: bridge

@@ -2,7 +2,9 @@
 
 namespace App\Services\Sources;
 
+use App\Services\Sources\Factory\SourceFactoryInterface;
 use Vin\SourcesLib\Dto\SourceTask;
+use Vin\SourcesLib\Jobs\ReportCompleteJob;
 
 class SourcesService
 {
@@ -15,13 +17,13 @@ class SourcesService
 
     public function processJob(array $payload)
     {
-        $dto = new SourceTask(100, 'gibdd', 'B738TO077', '1FABP21B4CK165368');
+        $source = $this->sourceFactory->createSourceInstance($payload['payload']->getSource());
+        $reportCompleteDto = $source->process($payload['payload']);
 
         $payload = [
-            'payload' => $dto,
+            'payload' => $reportCompleteDto,
         ];
 
-        $source = $this->sourceFactory->createSourceInstance($dto->getSource());
-        $source->process($payload['payload']);
+        ReportCompleteJob::dispatch($payload)->onQueue('reports');
     }
 }
